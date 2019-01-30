@@ -15,6 +15,16 @@ public:
     explicit Instruction(QWidget *parent = nullptr);
     ~Instruction();
 
+signals:
+    void backButtonClicked();
+
+    void continueButtonClicked();
+
+private slots:
+    void on_backButton_clicked();
+
+    void on_nextButton_clicked();
+
 private:
     Ui::Instruction *ui;
 };

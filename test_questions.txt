@@ -1,0 +1,8 @@
+://pictures/quest1.jpg
+50
+70
+90
+://pictures/quest2.jpg
+30
+40
+60

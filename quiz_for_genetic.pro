@@ -28,19 +28,31 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     welcome.cpp \
-    instruction.cpp
+    instruction.cpp \
+    form.cpp \
+    quiz.cpp \
+    question.cpp
 
 HEADERS += \
         mainwindow.h \
     welcome.h \
-    instruction.h
+    instruction.h \
+    form.h \
+    quiz.h \
+    question.h
 
 FORMS += \
         mainwindow.ui \
     welcome.ui \
-    instruction.ui
+    instruction.ui \
+    form.ui \
+    quiz.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    picts_for_quests.qrc \
+    quests.qrc
