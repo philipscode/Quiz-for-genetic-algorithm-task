@@ -3,9 +3,10 @@
 
 #include <QDebug>
 
-Quiz::Quiz(QWidget *parent) :
+Quiz::Quiz(QWidget *parent, QString name, QString surname) :
     QWidget(parent),
-    ui(new Ui::Quiz)
+    ui(new Ui::Quiz),
+    name_(name), surname_(surname)
 {
     ui->setupUi(this);
     QString fileName = "://test_questions.txt";
@@ -19,11 +20,6 @@ Quiz::Quiz(QWidget *parent) :
         test.append(current);
     }
     test.pop_back();
-    for (int i = 0; i < test.size(); i++)
-        qDebug() << test[i].getImagePath() << '\n'
-                 << test[i].getLeft() << '\n'
-                 << test[i].getCentral() << '\n'
-                 << test[i].getRight() << '\n';
 }
 
 Quiz::~Quiz()
@@ -53,9 +49,35 @@ void Quiz::doTest() const
     }
     ui->pictureLabel->clear();
     ui->pictureLabel->setText("Тест пройден");
+    this->saveAnswers();
+    for (auto ans : answers)
+        qDebug() << ans;
 }
 
-void Quiz::onKeyPressed()
+void Quiz::saveAnswers() const
 {
+    QString dirName = QStandardPaths::writableLocation(
+                QStandardPaths::DocumentsLocation) +
+            "/QUIZ_RESULTS/";
+    qDebug() << dirName;
+    if (!QDir(dirName).exists())
+        QDir().mkdir(dirName);
+    QString fileName = name_ + '_' + surname_ + ".txt";
+    QFile file(dirName + fileName);
+    file.open(QIODevice::WriteOnly);
+    QTextStream out(&file);
+    for (auto ans : answers)
+        out << ans << '\n';
+    file.close();
+}
+
+void Quiz::onKeyPressed(int key)
+{
+    if (key == Qt::Key_Left)
+        answers.append(answer::direction::left);
+    else if (key == Qt::Key_Up)
+        answers.append(answer::direction::forward);
+    else
+        answers.append(answer::direction::right);
     emit keyPressed();
 }

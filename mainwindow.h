@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QKeyEvent>
+#include <QString>
+#include <QDebug>
 #include "welcome.h"
 #include "form.h"
 #include "instruction.h"
@@ -22,14 +24,14 @@ public:
     void keyPressEvent(QKeyEvent*);
 
 signals:
-    void keyPressed();
+    void keyPressed(int);
 
 private slots:
     void goToFormWidget();
 
     void goToWelcomeWidget();
 
-    void goToInstructionWidget();
+    void goToInstructionWidget(QString, QString);
 
     void startTest();
 
@@ -39,6 +41,7 @@ private:
     Form *formWidget;
     Instruction *instructionWidget;
     Quiz *quizWidget;
+    QString name_, surname_;
 };
 
 #endif // MAINWINDOW_H

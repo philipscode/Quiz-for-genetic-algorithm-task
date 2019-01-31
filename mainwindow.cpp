@@ -21,13 +21,15 @@ void MainWindow::goToFormWidget() {
     formWidget = new Form;
     connect(formWidget, SIGNAL(backButtonClicked()),
             this, SLOT(goToWelcomeWidget()));
-    connect(formWidget, SIGNAL(submitButtonClicked()),
-            this, SLOT(goToInstructionWidget()));
+    connect(formWidget, SIGNAL(submitButtonClicked(QString, QString)),
+            this, SLOT(goToInstructionWidget(QString, QString)));
     this->setCentralWidget(formWidget);
 }
 
-void MainWindow::goToInstructionWidget()
+void MainWindow::goToInstructionWidget(QString name, QString surname)
 {
+    name_ = name;
+    surname_ = surname;
     instructionWidget = new Instruction;
     connect(instructionWidget, SIGNAL(backButtonClicked()),
             this, SLOT(goToFormWidget()));
@@ -46,14 +48,17 @@ void MainWindow::goToWelcomeWidget()
 
 void MainWindow::startTest()
 {
-    quizWidget = new Quiz;
-    connect(this, SIGNAL(keyPressed()),
-            quizWidget, SLOT(onKeyPressed()));
+    quizWidget = new Quiz(nullptr, name_, surname_);
+    connect(this, SIGNAL(keyPressed(int)),
+            quizWidget, SLOT(onKeyPressed(int)));
     this->setCentralWidget(quizWidget);
     quizWidget->doTest();
 }
 
 void MainWindow::keyPressEvent(QKeyEvent *ke)
 {
-    emit keyPressed();
+    if (ke->key() == Qt::Key_Left ||
+        ke->key() == Qt::Key_Up ||
+        ke->key() == Qt::Key_Right)
+        emit keyPressed(ke->key());
 }

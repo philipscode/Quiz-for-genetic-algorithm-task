@@ -2,6 +2,8 @@
 #include <QApplication>
 #include <QDir>
 #include <QDebug>
+#include <QList>
+#include <QStandardPaths>
 
 int main(int argc, char *argv[])
 {

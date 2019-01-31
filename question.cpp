@@ -2,14 +2,14 @@
 
 Question::Question() :
     imagePath_(""), leftChoice_(0),
-    centralChoice_(0), rightChoice_(0)
+    forwardChoice_(0), rightChoice_(0)
 {
 }
 
 Question::Question(QString imagePath, int leftChoice,
                    int centralChoice, int rightChoice) :
    imagePath_(imagePath), leftChoice_(leftChoice),
-   centralChoice_(centralChoice), rightChoice_(rightChoice)
+   forwardChoice_(centralChoice), rightChoice_(rightChoice)
 {
 }
 
@@ -23,9 +23,9 @@ int Question::getLeft() const
     return leftChoice_;
 }
 
-int Question::getCentral() const
+int Question::getForward() const
 {
-    return centralChoice_;
+    return forwardChoice_;
 }
 
 int Question::getRight() const

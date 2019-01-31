@@ -11,12 +11,12 @@ public:
     Question(QString, int, int, int);
     QString getImagePath() const;
     int getLeft() const;
-    int getCentral() const;
+    int getForward() const;
     int getRight() const;
     friend QTextStream& operator >> (QTextStream&, Question&);
 private:
     QString imagePath_;
-    int leftChoice_, centralChoice_, rightChoice_;
+    int leftChoice_, forwardChoice_, rightChoice_;
 };
 
 #endif // QUESTION_H

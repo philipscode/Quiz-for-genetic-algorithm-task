@@ -2,6 +2,7 @@
 #define FORM_H
 
 #include <QWidget>
+#include <QString>
 
 namespace Ui {
 class Form;
@@ -18,7 +19,7 @@ public:
 signals:
     void backButtonClicked();
 
-    void submitButtonClicked();
+    void submitButtonClicked(QString, QString);
 
 private slots:
     void on_backButton_clicked();

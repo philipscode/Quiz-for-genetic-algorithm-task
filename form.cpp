@@ -20,5 +20,9 @@ void Form::on_backButton_clicked()
 
 void Form::on_submitButton_clicked()
 {
-    emit(submitButtonClicked());
+    QString name = ui->nameLineEdit->text(),
+            surname = ui->surnameLineEdit->text();
+    if (name == "" || surname == "")
+        return;
+    emit(submitButtonClicked(name, surname));
 }
