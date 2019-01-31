@@ -1,8 +1,6 @@
 #include "quiz.h"
 #include "ui_quiz.h"
 
-#include <QDebug>
-
 Quiz::Quiz(QWidget *parent, QString name, QString surname) :
     QWidget(parent),
     ui(new Ui::Quiz),
@@ -50,16 +48,13 @@ void Quiz::doTest() const
     ui->pictureLabel->clear();
     ui->pictureLabel->setText("Тест пройден");
     this->saveAnswers();
-    for (auto ans : answers)
-        qDebug() << ans;
 }
 
 void Quiz::saveAnswers() const
 {
     QString dirName = QStandardPaths::writableLocation(
                 QStandardPaths::DocumentsLocation) +
-            "/QUIZ_RESULTS/";
-    qDebug() << dirName;
+            QDir::separator() + "QUIZ_RESULTS" + QDir::separator();
     if (!QDir(dirName).exists())
         QDir().mkdir(dirName);
     QString fileName = name_ + '_' + surname_ + ".txt";
