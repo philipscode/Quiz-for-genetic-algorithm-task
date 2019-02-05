@@ -9,16 +9,13 @@
 #include <QPixmap>
 #include <QEventLoop>
 #include <QTimer>
+#include <QTime>
 #include <QDir>
 #include <QFile>
 #include <QTextStream>
 #include <QStandardPaths>
 #include "question.h"
-
-struct answer
-{
-    enum direction { left, forward, right };
-};
+#include "answer.h"
 
 namespace Ui {
 class Quiz;
@@ -32,7 +29,7 @@ public:
     explicit Quiz(QWidget *parent = nullptr,
                   QString name = "", QString surname = "");
     ~Quiz();
-    void doTest() const;
+    void doTest();
     void saveAnswers() const;
 
 signals:
@@ -44,8 +41,9 @@ private slots:
 private:
     Ui::Quiz *ui;
     QList<Question> test;
-    QList<answer::direction> answers;
+    QList<Answer> answers;
     QString name_, surname_;
+    QTime *timeSpent;
 };
 
 #endif // QUIZ_H

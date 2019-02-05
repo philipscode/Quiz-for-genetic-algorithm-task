@@ -39,7 +39,8 @@ HEADERS += \
     instruction.h \
     form.h \
     quiz.h \
-    question.h
+    question.h \
+    answer.h
 
 FORMS += \
         mainwindow.ui \

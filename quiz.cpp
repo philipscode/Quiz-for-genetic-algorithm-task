@@ -1,5 +1,6 @@
 #include "quiz.h"
 #include "ui_quiz.h"
+#include "answer.h"
 
 Quiz::Quiz(QWidget *parent, QString name, QString surname) :
     QWidget(parent),
@@ -25,7 +26,7 @@ Quiz::~Quiz()
     delete ui;
 }
 
-void Quiz::doTest() const
+void Quiz::doTest()
 {
     for (int i = 0; i < test.size(); i++) {
         QPixmap defaultPicture("://pictures/default.jpg");
@@ -40,13 +41,15 @@ void Quiz::doTest() const
         QPixmap picture(test[i].getImagePath());
         ui->pictureLabel->setPixmap(picture);
         ui->pictureLabel->setScaledContents(true);
+        this->timeSpent = new QTime;
+        timeSpent->start();
         QEventLoop loop_2;
         connect(this, SIGNAL(keyPressed()),
                 &loop_2, SLOT(quit()));
         loop_2.exec();
     }
     ui->pictureLabel->clear();
-    ui->pictureLabel->setText("Тест пройден");
+    ui->pictureLabel->setText("СПАСИБО ЗА УЧАСТИЕ");
     this->saveAnswers();
 }
 
@@ -68,11 +71,14 @@ void Quiz::saveAnswers() const
 
 void Quiz::onKeyPressed(int key)
 {
+    Answer userAnswer;
+    userAnswer.timeSpent = this->timeSpent->elapsed();
     if (key == Qt::Key_Left)
-        answers.append(answer::direction::left);
+        userAnswer.directionChosen = Answer::direction::left;
     else if (key == Qt::Key_Up)
-        answers.append(answer::direction::forward);
+        userAnswer.directionChosen = Answer::direction::forward;
     else
-        answers.append(answer::direction::right);
+        userAnswer.directionChosen = Answer::direction::right;
+    answers.append(userAnswer);
     emit keyPressed();
 }
