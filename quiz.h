@@ -2,11 +2,14 @@
 #define QUIZ_H
 
 #include <QWidget>
+#include <QLabel>
 #include <QList>
 #include <QFile>
 #include <QTextStream>
 #include <QString>
 #include <QPixmap>
+#include <QPalette>
+#include <QIcon>
 #include <QEventLoop>
 #include <QTimer>
 #include <QTime>
@@ -14,6 +17,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QStandardPaths>
+#include <QPropertyAnimation>
+#include <QParallelAnimationGroup>
 #include "question.h"
 #include "answer.h"
 
@@ -27,7 +32,7 @@ class Quiz : public QWidget
 
 public:
     explicit Quiz(QWidget *parent = nullptr,
-                  QString name = "", QString surname = "");
+                  QString name = "default", QString surname = "name");
     ~Quiz();
     void doTest();
     void saveAnswers() const;
@@ -39,11 +44,14 @@ private slots:
     void onKeyPressed(int);
 
 private:
+    void setPlay();
+    void setPause();
     Ui::Quiz *ui;
     QList<Question> test;
     QList<Answer> answers;
     QString name_, surname_;
     QTime *timeSpent;
+    bool animationOn;
 };
 
 #endif // QUIZ_H

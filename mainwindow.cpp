@@ -17,14 +17,19 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::goToFormWidget() {
+void MainWindow::goToFormWidget() //test
+{
+    this->startTest();
+}
+
+/*void MainWindow::goToFormWidget() {
     formWidget = new Form;
     connect(formWidget, SIGNAL(backButtonClicked()),
             this, SLOT(goToWelcomeWidget()));
     connect(formWidget, SIGNAL(submitButtonClicked(QString, QString)),
             this, SLOT(goToInstructionWidget(QString, QString)));
     this->setCentralWidget(formWidget);
-}
+}*/
 
 void MainWindow::goToInstructionWidget(QString name, QString surname)
 {
@@ -48,10 +53,16 @@ void MainWindow::goToWelcomeWidget()
 
 void MainWindow::startTest()
 {
-    quizWidget = new Quiz(nullptr, name_, surname_);
+    quizWidget = new Quiz(); //test
+    //quizWidget = new Quiz(nullptr, name_, surname_);
     connect(this, SIGNAL(keyPressed(int)),
             quizWidget, SLOT(onKeyPressed(int)));
     this->setCentralWidget(quizWidget);
+    QPixmap bkgnd("://pictures/road.png");
+    bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
+    QPalette palette;
+    palette.setBrush(QPalette::Background, bkgnd);
+    this->setPalette(palette);
     quizWidget->doTest();
 }
 

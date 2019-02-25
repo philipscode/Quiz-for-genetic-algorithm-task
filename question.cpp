@@ -1,21 +1,21 @@
 #include "question.h"
 
 Question::Question() :
-    imagePath_(""), leftChoice_(0),
+    objectType_(""), leftChoice_(0),
     forwardChoice_(0), rightChoice_(0)
 {
 }
 
-Question::Question(QString imagePath, int leftChoice,
+Question::Question(QString objectType, int leftChoice,
                    int centralChoice, int rightChoice) :
-   imagePath_(imagePath), leftChoice_(leftChoice),
+   objectType_(objectType), leftChoice_(leftChoice),
    forwardChoice_(centralChoice), rightChoice_(rightChoice)
 {
 }
 
-QString Question::getImagePath() const
+QString Question::getObjectType() const
 {
-    return imagePath_;
+    return objectType_;
 }
 
 int Question::getLeft() const

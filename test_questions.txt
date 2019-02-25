@@ -1,8 +1,8 @@
-://pictures/quest1.jpg
+dog
 50
 70
 90
-://pictures/quest2.jpg
+man
 30
 40
 60

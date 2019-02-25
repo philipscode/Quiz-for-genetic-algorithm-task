@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>500</height>
+    <width>700</width>
+    <height>590</height>
    </rect>
   </property>
   <property name="maximumSize">
@@ -19,54 +19,19 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="pictureLabel">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="maximumSize">
-      <size>
-       <width>699</width>
-       <height>699</height>
-      </size>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <widget class="QPushButton" name="pauseButton">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>20</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

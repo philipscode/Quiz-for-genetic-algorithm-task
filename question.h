@@ -9,13 +9,13 @@ class Question
 public:
     Question();
     Question(QString, int, int, int);
-    QString getImagePath() const;
+    QString getObjectType() const;
     int getLeft() const;
     int getForward() const;
     int getRight() const;
     friend QTextStream& operator >> (QTextStream&, Question&);
 private:
-    QString imagePath_;
+    QString objectType_;
     int leftChoice_, forwardChoice_, rightChoice_;
 };
 
