@@ -31,7 +31,8 @@ SOURCES += \
     instruction.cpp \
     form.cpp \
     quiz.cpp \
-    question.cpp
+    question.cpp \
+    final.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -40,14 +41,16 @@ HEADERS += \
     form.h \
     quiz.h \
     question.h \
-    answer.h
+    answer.h \
+    final.h
 
 FORMS += \
         mainwindow.ui \
     welcome.ui \
     instruction.ui \
     form.ui \
-    quiz.ui
+    quiz.ui \
+    final.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

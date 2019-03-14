@@ -9,6 +9,7 @@
 #include "form.h"
 #include "instruction.h"
 #include "quiz.h"
+#include "final.h"
 
 namespace Ui {
 class MainWindow;
@@ -41,6 +42,7 @@ private:
     Form *formWidget;
     Instruction *instructionWidget;
     Quiz *quizWidget;
+    Final *finalWidget;
     QString name_, surname_;
 };
 

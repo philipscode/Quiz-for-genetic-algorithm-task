@@ -2,12 +2,20 @@
     <qresource prefix="/">
         <file>pictures/road.png</file>
         <file>pictures/car.jpg</file>
-        <file>pictures/dog.png</file>
         <file>pictures/man.png</file>
         <file>pictures/forward.png</file>
         <file>pictures/left.png</file>
         <file>pictures/right.png</file>
         <file>pictures/play.png</file>
         <file>pictures/pause.png</file>
+        <file>pictures/car_oncoming.png</file>
+        <file>pictures/right_high.jpg</file>
+        <file>pictures/right_low.jpg</file>
+        <file>pictures/right_medium.jpg</file>
+        <file>pictures/forward_high.jpg</file>
+        <file>pictures/forward_medium.jpg</file>
+        <file>pictures/left_high.jpg</file>
+        <file>pictures/left_medium.jpg</file>
+        <file>pictures/left_low.jpg</file>
     </qresource>
 </RCC>

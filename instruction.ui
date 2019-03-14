@@ -29,7 +29,10 @@
       </size>
      </property>
      <property name="styleSheet">
-      <string notr="true">color: black;</string>
+      <string notr="true">color: rgb(226, 213, 212);
+background-color: rgb(129, 118, 107);
+border: 0px;
+</string>
      </property>
      <property name="html">
       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
@@ -68,6 +71,9 @@ p, li { white-space: pre-wrap; }
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Preferred</enum>
+     </property>
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
@@ -81,7 +87,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QPushButton" name="backButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -92,6 +98,13 @@ p, li { white-space: pre-wrap; }
          <height>70</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:  rgb(240, 171, 0);
+color: rgb(226, 213, 212);
+font-size: 25px;
+font-weight: 600;
+border: 0px;</string>
+       </property>
        <property name="text">
         <string>Назад</string>
        </property>
@@ -101,6 +114,9 @@ p, li { white-space: pre-wrap; }
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Preferred</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -113,7 +129,7 @@ p, li { white-space: pre-wrap; }
      <item>
       <widget class="QPushButton" name="nextButton">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -130,12 +146,35 @@ p, li { white-space: pre-wrap; }
          <height>0</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">background-color:  rgb(240, 171, 0);
+color: rgb(226, 213, 212);
+font-size: 25px;
+font-weight: 600;
+border: 0px;</string>
+       </property>
        <property name="text">
         <string>Продолжить</string>
        </property>
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer_2">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Preferred</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

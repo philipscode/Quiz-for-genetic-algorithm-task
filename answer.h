@@ -6,11 +6,17 @@
 struct Answer
 {
     enum direction { left, forward, right };
-    direction directionChosen;
+
     int timeSpent;
+    int isAlt;
+    int pictShown;
+    direction directionChosen;
+    int number;
     friend QTextStream& operator << (QTextStream &out, Answer &ans)
     {
-        out << ans.directionChosen << ' ' << ans.timeSpent << '\n';
+        out << ans.timeSpent << ' ' << ans.isAlt << ' ' <<
+               ans.pictShown << ' ' << ans.directionChosen << ' ' <<
+               ans.number;
         return out;
     }
 };

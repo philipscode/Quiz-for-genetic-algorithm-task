@@ -13,6 +13,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="1" column="2">
     <spacer name="horizontalSpacer_2">
@@ -81,6 +84,13 @@
        <width>800</width>
        <height>800</height>
       </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color:  rgb(240, 171, 0);
+color: rgb(226, 213, 212);
+font-size: 25px;
+font-weight: 600;
+border: 0px;</string>
      </property>
      <property name="text">
       <string>НАЧАТЬ</string>
