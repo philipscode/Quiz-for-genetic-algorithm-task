@@ -8,8 +8,6 @@
 #include <QTextStream>
 #include <QString>
 #include <QPixmap>
-#include <QPalette>
-#include <QIcon>
 #include <QEventLoop>
 #include <QTimer>
 #include <QTime>
@@ -20,7 +18,10 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QByteArray>
-#include <vector>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QTableWidgetItem>
+#include <QVector>
 
 #include "question.h"
 #include "answer.h"
@@ -35,28 +36,39 @@ class Quiz : public QWidget
 
 public:
     explicit Quiz(QWidget *parent = nullptr,
-                  QString name = "default", QString surname = "name");
+                  QString userName = "default name");
     ~Quiz();
     void doTest();
     void saveAnswers() const;
 
 signals:
+    void buttonClicked(int);
+
     void keyPressed();
 
     void keyPressedAlt();
 
 private slots:
-    void onKeyPressed(int);
+    void onButtonClicked(int);
 
     void on_pauseButton_clicked();
+
+    void on_leftButton_clicked();
+
+    void on_forwardButton_clicked();
+
+    void on_rightButton_clicked();
+
+    void on_altButton_clicked();
 
 private:
     void setPlay();
     void setPause();
+
     Ui::Quiz *ui;
     QList<Question> test;
     QList<Answer> answers;
-    QString name_, surname_;
+    QString userName_;
     QTime *timeSpent;
     bool animationOn;
     bool isPaused;
@@ -66,22 +78,15 @@ private:
     QTimer *timer;
     int timerSaved;
     int timeSpentSaved;
+    int timeSpentSavedSpace;
     int duration;
     int durationAlt;
     int durationPict;
-    std::vector<int> pictInfo {0, 0, 0};
-    std::vector<int> numbers {0, 0, 0};
-    QPixmap leftLow {"://pictures/left_low.jpg"};
-    QPixmap leftMedium {"://pictures/left_medium.jpg"};
+    QVector<int> pictInfo;
     QPixmap leftHigh {"://pictures/left_high.jpg"};
-    QPixmap forwardMeduim {"://pictures/forward_medium.jpg"};
     QPixmap forwardHigh {"://pictures/forward_high.jpg"};
-    QPixmap rightLow {"://pictures/right_low.jpg"};
-    QPixmap rightMedium {"://pictures/right_medium.jpg"};
     QPixmap rightHigh {"://pictures/right_high.jpg"};
-    QString leftLowInfo, leftMediumInfo, leftHighInfo;
-    QString forwardLowInfo, forwardMediumInfo, forwardHighInfo;
-    QString rightLowInfo, rightMediumInfo, rightHighInfo;
+    QString leftInfo, forwardInfo, rightInfo;
 };
 
 #endif // QUIZ_H

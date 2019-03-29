@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QKeyEvent>
 #include <QString>
 #include <QDebug>
 #include "welcome.h"
@@ -22,17 +21,13 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void keyPressEvent(QKeyEvent*);
-
-signals:
-    void keyPressed(int);
 
 private slots:
     void goToFormWidget();
 
     void goToWelcomeWidget();
 
-    void goToInstructionWidget(QString, QString);
+    void goToInstructionWidget(QString);
 
     void startTest();
 
@@ -43,7 +38,7 @@ private:
     Instruction *instructionWidget;
     Quiz *quizWidget;
     Final *finalWidget;
-    QString name_, surname_;
+    QString userName_;
 };
 
 #endif // MAINWINDOW_H

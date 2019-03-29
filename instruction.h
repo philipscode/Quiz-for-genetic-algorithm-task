@@ -16,12 +16,10 @@ public:
     ~Instruction();
 
 signals:
-    void backButtonClicked();
 
     void continueButtonClicked();
 
 private slots:
-    void on_backButton_clicked();
 
     void on_nextButton_clicked();
 

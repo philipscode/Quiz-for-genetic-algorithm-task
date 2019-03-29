@@ -85,12 +85,22 @@
        <height>800</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>22</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color:  rgb(240, 171, 0);
-color: rgb(226, 213, 212);
-font-size: 25px;
-font-weight: 600;
-border: 0px;</string>
+      <string notr="true">QPushButton {
+	background-color: #30302e;
+	border: 0px;
+	color: white;
+}
+QPushButton:pressed {
+	background-color: #a8a8a4;
+	border: 0px;
+	color: white;
+ }</string>
      </property>
      <property name="text">
       <string>НАЧАТЬ</string>

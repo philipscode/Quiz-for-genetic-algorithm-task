@@ -17,12 +17,10 @@ public:
     ~Form();
 
 signals:
-    void backButtonClicked();
 
-    void submitButtonClicked(QString, QString);
+    void submitButtonClicked(QString);
 
 private slots:
-    void on_backButton_clicked();
 
     void on_submitButton_clicked();
 

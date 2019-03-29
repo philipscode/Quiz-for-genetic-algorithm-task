@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setCentralWidget(welcomeWidget);
     connect(welcomeWidget, SIGNAL(startButtonClicked()),
             this, SLOT(goToFormWidget()));
+    this->setWindowTitle("Программа-опрос для составления генетического"
+                         "алгоритма");
 }
 
 MainWindow::~MainWindow()
@@ -17,27 +19,18 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-/*void MainWindow::goToFormWidget() //test
-{
-    this->startTest();
-}*/
-
 void MainWindow::goToFormWidget() {
+    //this->startTest();
     formWidget = new Form;
-    connect(formWidget, SIGNAL(backButtonClicked()),
-            this, SLOT(goToWelcomeWidget()));
-    connect(formWidget, SIGNAL(submitButtonClicked(QString, QString)),
-            this, SLOT(goToInstructionWidget(QString, QString)));
+    connect(formWidget, SIGNAL(submitButtonClicked(QString)),
+            this, SLOT(goToInstructionWidget(QString)));
     this->setCentralWidget(formWidget);
 }
 
-void MainWindow::goToInstructionWidget(QString name, QString surname)
+void MainWindow::goToInstructionWidget(QString userName)
 {
-    name_ = name;
-    surname_ = surname;
+    this->userName_ = userName;
     instructionWidget = new Instruction;
-    connect(instructionWidget, SIGNAL(backButtonClicked()),
-            this, SLOT(goToFormWidget()));
     connect(instructionWidget, SIGNAL(continueButtonClicked()),
             this, SLOT(startTest()));
     this->setCentralWidget(instructionWidget);
@@ -54,12 +47,10 @@ void MainWindow::goToWelcomeWidget()
 void MainWindow::startTest()
 {
     //quizWidget = new Quiz(); //test
-    quizWidget = new Quiz(nullptr, name_, surname_);
-    connect(this, SIGNAL(keyPressed(int)),
-            quizWidget, SLOT(onKeyPressed(int)));
+    quizWidget = new Quiz(nullptr, this->userName_);
     this->setCentralWidget(quizWidget);
     this->setStyleSheet("");
-    QPixmap bkgnd("://pictures/road.png");
+    QPixmap bkgnd("://pictures/road-light.png");
     bkgnd = bkgnd.scaled(this->size(), Qt::IgnoreAspectRatio);
     QPalette palette;
     palette.setBrush(QPalette::Background, bkgnd);
@@ -67,13 +58,4 @@ void MainWindow::startTest()
     quizWidget->doTest();
     finalWidget = new Final();
     this->setCentralWidget(finalWidget);
-}
-
-void MainWindow::keyPressEvent(QKeyEvent *ke)
-{
-    if (ke->key() == Qt::Key_Left ||
-        ke->key() == Qt::Key_Up ||
-        ke->key() == Qt::Key_Right ||
-        ke->key() == Qt::Key_Space)
-        emit keyPressed(ke->key());
 }

@@ -2,11 +2,13 @@
 #include "ui_quiz.h"
 #include "answer.h"
 
-Quiz::Quiz(QWidget *parent, QString name, QString surname) :
+#include <QDebug>
+
+Quiz::Quiz(QWidget *parent, QString userName) :
     QWidget(parent),
     ui(new Ui::Quiz),
-    name_(name), surname_(surname), isPaused(false),
-    duration(3000), durationAlt(1000), durationPict(2000)
+    userName_(userName), isPaused(false),
+    duration(1000), durationAlt(1000), durationPict(1000)
 {
     ui->setupUi(this);
     this->setPause();
@@ -22,25 +24,31 @@ Quiz::Quiz(QWidget *parent, QString name, QString surname) :
     }
     testFile.close();
     ui->pictLabel->setScaledContents(true);
-    leftLowInfo = "Повреждения обоих автомобилей\n"
-                  "легкой степени тяжести.\n"
-                  "Некритические травмы для пассажиров.";
-    leftMediumInfo = "Повреждения обоих автомобилей\n"
-                     "средней степени тяжести.\n"
-                     "Опасность серьезных травм\n"
-                     "для пассажиров.";
-    leftHighInfo = "Максимальный урон автомобилям.\n"
-                   "Почти неизбежная гибель пассажиров.";
-    forwardLowInfo = "Травмы пешехода без угрозы\n"
-                     "для жизни.";
-    forwardMediumInfo = "Серьезные травмы для пешехода.\n"
-                        "Некоторый риск смерти.";
-    forwardHighInfo = "Смертельный исход для пешехода.";
-    rightLowInfo = "Незначительные поврежедения автомобиля.";
-    rightMediumInfo = "Серьезные повреждения автомобиля.\n"
-                      "Опасность серьезных травм.";
-    rightHighInfo = "Максимальный урон автомобилю.\n"
-                    "Вероятность смерти пассажиров.";
+
+    leftInfo = "Лобовое столкновение.";
+    forwardInfo = "Наезд на пешехода.";
+    rightInfo = "Вылет в кювет.";
+
+    ui->table->setRowCount(4);
+    ui->table->setColumnCount(3);
+
+    QStringList horizontalLabels;
+    horizontalLabels << tr("1") << tr("2") << tr("3");
+    QStringList verticalLabels;
+    verticalLabels << tr("Пешеход") << tr("Водитель") << tr("Машина") << tr("Встречная");
+
+    ui->table->setHorizontalHeaderLabels(horizontalLabels);
+    ui->table->setVerticalHeaderLabels(verticalLabels);
+
+    ui->table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    ui->table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->table->setFocusPolicy(Qt::NoFocus);
+    ui->table->setSelectionMode(QAbstractItemView::NoSelection);
+
+    connect(this, SIGNAL(buttonClicked(int)),
+            this, SLOT(onButtonClicked(int)));
 }
 
 Quiz::~Quiz()
@@ -49,7 +57,7 @@ Quiz::~Quiz()
 }
 
 void Quiz::doTest()
-{   
+{
     QLabel *car = new QLabel(this);
     QLabel *carOncoming = new QLabel(this);
     QLabel *man = new QLabel(this);
@@ -70,14 +78,13 @@ void Quiz::doTest()
     right->setScaledContents(true);
     forward->setScaledContents(true);
 
-    QPixmap carPicture("://pictures/car.jpg");
+    QPixmap carPicture("://pictures/car.png");
     QPixmap carOncomingPicture("://pictures/car_oncoming.png");
     QPixmap manPicture("://pictures/man.png");
     car->setPixmap(carPicture);
     carOncoming->setPixmap(carOncomingPicture);
     man->setPixmap(manPicture);
 
-    //manObject->setFixedSize(manPicture.size());
     QPixmap leftArrow("://pictures/left.png");
     QPixmap rightArrow("://pictures/right.png");
     QPixmap forwardArrow("://pictures/forward.png");
@@ -85,18 +92,34 @@ void Quiz::doTest()
     right->setPixmap(rightArrow);
     forward->setPixmap(forwardArrow);
 
-    leftNumber->setStyleSheet("color: red; font-size: 16px");
-    rightNumber->setStyleSheet("color: red; font-size: 16px");
-    forwardNumber->setStyleSheet("color: red; font-size: 16px");
+    QString numberStyle = "color: red; font-size: 16px";
 
-    leftInfo->setStyleSheet("color: #db2b2b; font-size: 10px;"
-                            "border: 2px solid #db2b2b");
-    forwardInfo->setStyleSheet("color: #db2b2b; font-size: 10px;"
-                               "border: 2px solid #db2b2b");
-    rightInfo->setStyleSheet("color: #db2b2b; font-size: 10px;"
-                             "border: 2px solid #db2b2b");
+    leftNumber->setStyleSheet(numberStyle);
+    rightNumber->setStyleSheet(numberStyle);
+    forwardNumber->setStyleSheet(numberStyle);
+
+    QString infoStyle = "color: #db2b2b; font-size: 18px;"
+                        "border: 2px solid #db2b2b; background-color: #e8b620";
+
+    leftInfo->setStyleSheet(infoStyle);
+    forwardInfo->setStyleSheet(infoStyle);
+    rightInfo->setStyleSheet(infoStyle);
+
+    leftInfo->setText(this->leftInfo);
+    forwardInfo->setText(this->forwardInfo);
+    rightInfo->setText(this->rightInfo);
 
     for (int i = 0; i < this->test.size(); i++) {
+        ui->table->hide();
+        ui->table->clearContents();
+
+        ui->leftButton->hide();
+        ui->forwardButton->hide();
+        ui->rightButton->hide();
+        ui->altButton->hide();
+
+        ui->countLabel->setText(QString::number(i + 1) + " / " +
+                                QString::number(this->test.size()));
         ui->pictLabel->hide();
         this->pictOn = false;
         this->spacePressed = false;
@@ -121,7 +144,7 @@ void Quiz::doTest()
 
         leftInfo->move(120, 200);
         forwardInfo->move(380, 200);
-        rightInfo->move(500, 400);
+        rightInfo->move(520, 350);
 
         leftInfo->hide();
         forwardInfo->hide();
@@ -156,50 +179,35 @@ void Quiz::doTest()
         loop_timer.exec();
         this->animationOn = false;
 
+        ui->leftButton->show();
+        ui->forwardButton->show();
+        ui->rightButton->show();
+        ui->altButton->show();
+
         left->show();
         right->show();
         forward->show();
-        leftNumber->setText(QString::number(this->test[i].getLeft()));
+        leftNumber->setText("1");
         leftNumber->show();
-        rightNumber->setText(QString::number(
-                                 this->test[i].getRight()));
-        rightNumber->show();
-        forwardNumber->setText(QString::number(
-                                   this->test[i].getForward()));
+        forwardNumber->setText("2");
         forwardNumber->show();
+        rightNumber->setText("3");
+        rightNumber->show();
 
-        if (this->test[i].getLeft() < 40)
-            leftInfo->setText(this->leftLowInfo);
-        else if (this->test[i].getLeft() < 70)
-            leftInfo->setText(this->leftMediumInfo);
-        else
-            leftInfo->setText(this->leftHighInfo);
-
-        if (this->test[i].getForward() < 40)
-            forwardInfo->setText(this->forwardLowInfo);
-        else if (this->test[i].getForward() < 70)
-            forwardInfo->setText(this->forwardMediumInfo);
-        else
-            forwardInfo->setText(this->forwardHighInfo);
-
-        if (this->test[i].getRight() < 40)
-            rightInfo->setText(this->rightLowInfo);
-        else if (this->test[i].getRight() < 70)
-            rightInfo->setText(this->rightMediumInfo);
-        else
-            rightInfo->setText(this->rightHighInfo);
+        for (int j = 0; j < 3; j++)
+            for (int k = 0; k < 4; k++)
+                ui->table->setItem(k, j, new QTableWidgetItem(
+                               QString::number(this->test[i].table[j][k].prob)
+                           + " / " +
+                           QString::number(this->test[i].table[j][k].cost)));
+        ui->table->resizeRowsToContents();
+        ui->table->show();
 
         leftInfo->show();
         forwardInfo->show();
         rightInfo->show();
 
-        this->pictInfo[0] = this->test[i].getLeftPict();
-        this->pictInfo[1] = this->test[i].getForwardPict();
-        this->pictInfo[2] = this->test[i].getRightPict();
-
-        this->numbers[0] = this->test[i].getLeft();
-        this->numbers[1] = this->test[i].getForward();
-        this->numbers[2] = this->test[i].getRight();
+        this->pictInfo = this->test[i].showPict;
 
         this->timeSpent = new QTime;
         this->timeSpentSaved = 0;
@@ -210,6 +218,14 @@ void Quiz::doTest()
         loop_key.exec();
 
         if (this->spacePressed) {
+            ui->table->hide();
+            ui->table->clearContents();
+
+            ui->leftButton->hide();
+            ui->forwardButton->hide();
+            ui->rightButton->hide();
+            ui->altButton->hide();
+
             left->hide();
             right->hide();
             forward->hide();
@@ -259,55 +275,39 @@ void Quiz::doTest()
             forwardNumber->move(470, 170);
             rightNumber->move(500, 210);
 
+            ui->leftButton->show();
+            ui->forwardButton->show();
+            ui->rightButton->show();
+
             left->show();
             right->show();
             forward->show();
-            leftNumber->setText(QString::number(
-                                    this->test[i].getLeftAlt()));
+            leftNumber->setText("1");
             leftNumber->show();
-            rightNumber->setText(QString::number(
-                                     this->test[i].getRightAlt()));
-            rightNumber->show();
-            forwardNumber->setText(QString::number(
-                                       this->test[i].getForwardAlt()));
+            forwardNumber->setText("2");
             forwardNumber->show();
+            rightNumber->setText("3");
+            rightNumber->show();
+
+            for (int j = 0; j < 3; j++)
+                for (int k = 0; k < 4; k++)
+                    ui->table->setItem(k, j, new QTableWidgetItem(
+                                   QString::number(this->test[i].tableAlt[j][k].prob)
+                               + " / " +
+                               QString::number(this->test[i].tableAlt[j][k].cost)));
+
+            ui->table->resizeRowsToContents();
+            ui->table->show();
 
             leftInfo->move(120, 200);
             forwardInfo->move(500, 100);
             rightInfo->move(500, 270);
 
-            if (this->test[i].getLeft() < 40)
-                leftInfo->setText(this->leftLowInfo);
-            else if (this->test[i].getLeft() < 70)
-                leftInfo->setText(this->leftMediumInfo);
-            else
-                leftInfo->setText(this->leftHighInfo);
-
-            if (this->test[i].getForward() < 40)
-                forwardInfo->setText(this->forwardLowInfo);
-            else if (this->test[i].getForward() < 70)
-                forwardInfo->setText(this->forwardMediumInfo);
-            else
-                forwardInfo->setText(this->forwardHighInfo);
-
-            if (this->test[i].getRight() < 40)
-                rightInfo->setText(this->rightLowInfo);
-            else if (this->test[i].getRight() < 70)
-                rightInfo->setText(this->rightMediumInfo);
-            else
-                rightInfo->setText(this->rightHighInfo);
-
             leftInfo->show();
             forwardInfo->show();
             rightInfo->show();
 
-            this->pictInfo[0] = this->test[i].getLeftPictAlt();
-            this->pictInfo[1] = this->test[i].getForwardPictAlt();
-            this->pictInfo[2] = this->test[i].getRightPictAlt();
-
-            this->numbers[0] = this->test[i].getLeftAlt();
-            this->numbers[1] = this->test[i].getForwardAlt();
-            this->numbers[2] = this->test[i].getRightAlt();
+            this->pictInfo = this->test[i].showPictAlt;
 
             this->timeSpent = new QTime;
             this->timeSpentSaved = 0;
@@ -323,107 +323,147 @@ void Quiz::doTest()
 
 void Quiz::saveAnswers() const
 {
-    QString dirName = QStandardPaths::writableLocation(
+    /*QString dirName = QStandardPaths::writableLocation(
                 QStandardPaths::DocumentsLocation) +
             QDir::separator() + "QUIZ_RESULTS" + QDir::separator();
     if (!QDir(dirName).exists())
-        QDir().mkdir(dirName);
-    //QString fileName = this->name_ + '_' + this->surname_ + ".txt";
-    QString fileName = "results.txt";
-    QFile file(dirName + fileName);
-    file.open(QIODevice::WriteOnly | QIODevice::Append);
+        QDir().mkdir(dirName);*/
+    QString fileName = "results.csv";
+    QFile file(fileName);
+    if (!file.exists())
+        file.open(QIODevice::WriteOnly);
+    else
+        file.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream out(&file);
-    out << this->surname_ << ' ' << this->name_ << ' '
-        << QDateTime::currentDateTime().toString("dd.MM.yyyy") << ' '
-        << QTime::currentTime().toString("hh:mm") << '\n';
+    out << this->userName_ << ','
+        << QDateTime::currentDateTime().toString("dd.MM.yyyy") << ','
+        << QTime::currentTime().toString("hh:mm");
     for (auto ans : this->answers)
-        out << ans << '\n';
+        out << ',' << ans;
+    out << '\n';
     file.close();
 }
 
-void Quiz::onKeyPressed(int key)
+void Quiz::onButtonClicked(int button)
 {
     if (this->animationOn)
         return;
     if (this->isPaused)
         return;
-    if (this->spacePressed && key == Qt::Key_Space)
+    if (this->spacePressed && button == 4)
         return;
-    if (!this->spacePressed && key == Qt::Key_Space) {
+    if (!this->spacePressed && button == 4) {
         this->spacePressed = true;
+        this->timeSpentSavedSpace = this->timeSpentSaved + this->timeSpent->elapsed();
         emit keyPressed();
         return;
     }
     Answer userAnswer;
-    userAnswer.timeSpent = this->timeSpentSaved +
-            this->timeSpent->elapsed();
-    userAnswer.isAlt = this->spacePressed ? 1 : 0;
-    if (key == Qt::Key_Left) {
-        userAnswer.pictShown = this->pictInfo[0];
-        userAnswer.directionChosen = Answer::direction::left;
-        userAnswer.number = this->numbers[0];
+    if (this->spacePressed) {
+        userAnswer.timeSpent = this->timeSpentSavedSpace;
+        userAnswer.directionChosen = Answer::direction::alt;
+        userAnswer.timeSpentAlt = this->timeSpentSaved +
+                this->timeSpent->elapsed();
+        if (button == 1) {
+            userAnswer.directionChosenAlt = Answer::direction::left;
 
-        if (this->pictInfo[0] == 1) {
-            this->pictOn = true;
-            if (this->numbers[0] < 40)
-                ui->pictLabel->setPixmap(this->leftLow);
-            else if (this->numbers[0] < 70)
-                ui->pictLabel->setPixmap(this->leftMedium);
-            else
+            if (this->pictInfo[0] == 1) {
+                this->pictOn = true;
                 ui->pictLabel->setPixmap(this->leftHigh);
-            ui->pictLabel->show();
-            ui->pictLabel->raise();
+                ui->pictLabel->show();
+                ui->pictLabel->raise();
 
-            QEventLoop loop_pict;
-            this->timer = new QTimer;
-            this->timer->start(this->durationPict);
-            connect(this->timer, SIGNAL(timeout()),
-                    &loop_pict, SLOT(quit()));
-            loop_pict.exec();
-        }
-    } else if (key == Qt::Key_Up) {
-        userAnswer.pictShown = this->pictInfo[1];
-        userAnswer.directionChosen = Answer::direction::forward;
-        userAnswer.number = this->numbers[1];
+                QEventLoop loop_pict;
+                this->timer = new QTimer;
+                this->timer->start(this->durationPict);
+                connect(this->timer, SIGNAL(timeout()),
+                        &loop_pict, SLOT(quit()));
+                loop_pict.exec();
+            }
+        } else if (button == 2) {
+            userAnswer.directionChosenAlt = Answer::direction::forward;
 
-        if (this->pictInfo[1] == 1) {
-            this->pictOn = true;
-            if (this->numbers[1] < 70)
-                ui->pictLabel->setPixmap(this->forwardMeduim);
-            else
+            if (this->pictInfo[1] == 1) {
+                this->pictOn = true;
                 ui->pictLabel->setPixmap(this->forwardHigh);
-            ui->pictLabel->show();
-            ui->pictLabel->raise();
+                ui->pictLabel->show();
+                ui->pictLabel->raise();
 
-            QEventLoop loop_pict;
-            this->timer = new QTimer;
-            this->timer->start(this->durationPict);
-            connect(this->timer, SIGNAL(timeout()),
-                    &loop_pict, SLOT(quit()));
-            loop_pict.exec();
+                QEventLoop loop_pict;
+                this->timer = new QTimer;
+                this->timer->start(this->durationPict);
+                connect(this->timer, SIGNAL(timeout()),
+                        &loop_pict, SLOT(quit()));
+                loop_pict.exec();
+            }
+        } else {
+            userAnswer.directionChosenAlt = Answer::direction::right;
+
+            if (this->pictInfo[2] == 1) {
+                this->pictOn = true;
+                ui->pictLabel->setPixmap(this->rightHigh);
+                ui->pictLabel->show();
+                ui->pictLabel->raise();
+
+                QEventLoop loop_pict;
+                this->timer = new QTimer;
+                this->timer->start(this->durationPict);
+                connect(this->timer, SIGNAL(timeout()),
+                        &loop_pict, SLOT(quit()));
+                loop_pict.exec();
+            }
         }
     } else {
-        userAnswer.pictShown = this->pictInfo[2];
-        userAnswer.directionChosen = Answer::direction::right;
-        userAnswer.number = this->numbers[0];
+        userAnswer.timeSpent = this->timeSpentSaved +
+                this->timeSpent->elapsed();
+        if (button == 1) {
+            userAnswer.directionChosen = Answer::direction::left;
 
-        if (this->pictInfo[2] == 1) {
-            this->pictOn = true;
-            if (this->numbers[2] < 40)
-                ui->pictLabel->setPixmap(this->rightLow);
-            else if (this->numbers[2] < 70)
-                ui->pictLabel->setPixmap(this->rightMedium);
-            else
+            if (this->pictInfo[0] == 1) {
+                this->pictOn = true;
+                ui->pictLabel->setPixmap(this->leftHigh);
+                ui->pictLabel->show();
+                ui->pictLabel->raise();
+
+                QEventLoop loop_pict;
+                this->timer = new QTimer;
+                this->timer->start(this->durationPict);
+                connect(this->timer, SIGNAL(timeout()),
+                        &loop_pict, SLOT(quit()));
+                loop_pict.exec();
+            }
+        } else if (button == 2) {
+            userAnswer.directionChosen = Answer::direction::forward;
+
+            if (this->pictInfo[1] == 1) {
+                this->pictOn = true;
+                ui->pictLabel->setPixmap(this->forwardHigh);
+                ui->pictLabel->show();
+                ui->pictLabel->raise();
+
+                QEventLoop loop_pict;
+                this->timer = new QTimer;
+                this->timer->start(this->durationPict);
+                connect(this->timer, SIGNAL(timeout()),
+                        &loop_pict, SLOT(quit()));
+                loop_pict.exec();
+            }
+        } else {
+            userAnswer.directionChosen = Answer::direction::right;
+
+            if (this->pictInfo[2] == 1) {
+                this->pictOn = true;
                 ui->pictLabel->setPixmap(this->rightHigh);
-            ui->pictLabel->show();
-            ui->pictLabel->raise();
+                ui->pictLabel->show();
+                ui->pictLabel->raise();
 
-            QEventLoop loop_pict;
-            this->timer = new QTimer;
-            this->timer->start(this->durationPict);
-            connect(this->timer, SIGNAL(timeout()),
-                    &loop_pict, SLOT(quit()));
-            loop_pict.exec();
+                QEventLoop loop_pict;
+                this->timer = new QTimer;
+                this->timer->start(this->durationPict);
+                connect(this->timer, SIGNAL(timeout()),
+                        &loop_pict, SLOT(quit()));
+                loop_pict.exec();
+            }
         }
     }
     if (!this->spacePressed)
@@ -473,4 +513,24 @@ void Quiz::on_pauseButton_clicked()
         this->isPaused = false;
         this->setPause();
     }
+}
+
+void Quiz::on_leftButton_clicked()
+{
+    emit buttonClicked(1);
+}
+
+void Quiz::on_forwardButton_clicked()
+{
+    emit buttonClicked(2);
+}
+
+void Quiz::on_rightButton_clicked()
+{
+    emit buttonClicked(3);
+}
+
+void Quiz::on_altButton_clicked()
+{
+    emit buttonClicked(4);
 }

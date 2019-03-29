@@ -37,8 +37,8 @@
      <property name="styleSheet">
       <string notr="true">font-size: 32px;
 font-weight: 600;
-background-color: rgb(129, 118, 107);
-color: rgb(226, 213, 212);</string>
+background-color: #efeeea;
+color: black;</string>
      </property>
      <property name="text">
       <string>CПАСИБО</string>

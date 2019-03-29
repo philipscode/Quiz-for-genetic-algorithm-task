@@ -13,11 +13,6 @@ Instruction::~Instruction()
     delete ui;
 }
 
-void Instruction::on_backButton_clicked()
-{
-    emit backButtonClicked();
-}
-
 void Instruction::on_nextButton_clicked()
 {
     emit continueButtonClicked();

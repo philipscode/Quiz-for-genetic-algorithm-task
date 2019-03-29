@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>pictures/road.png</file>
-        <file>pictures/car.jpg</file>
         <file>pictures/man.png</file>
         <file>pictures/forward.png</file>
         <file>pictures/left.png</file>
@@ -17,5 +16,7 @@
         <file>pictures/left_high.jpg</file>
         <file>pictures/left_medium.jpg</file>
         <file>pictures/left_low.jpg</file>
+        <file>pictures/road-light.png</file>
+        <file>pictures/car.png</file>
     </qresource>
 </RCC>
