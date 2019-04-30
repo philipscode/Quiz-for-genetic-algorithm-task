@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 #include <QString>
-#include <QDebug>
 #include "welcome.h"
 #include "form.h"
 #include "instruction.h"

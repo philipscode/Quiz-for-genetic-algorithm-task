@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(welcomeWidget, SIGNAL(startButtonClicked()),
             this, SLOT(goToFormWidget()));
     this->setWindowTitle("Программа-опрос для составления генетического"
-                         "алгоритма");
+                         " алгоритма");
 }
 
 MainWindow::~MainWindow()

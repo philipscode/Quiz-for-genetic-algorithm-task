@@ -14,13 +14,10 @@
 #include <QDateTime>
 #include <QDir>
 #include <QFile>
-#include <QStandardPaths>
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QByteArray>
-#include <QTableWidget>
 #include <QHeaderView>
-#include <QTableWidgetItem>
 #include <QVector>
 
 #include "question.h"
@@ -61,6 +58,8 @@ private slots:
 
     void on_altButton_clicked();
 
+    void updateQuizTimer();
+
 private:
     void setPlay();
     void setPause();
@@ -82,11 +81,13 @@ private:
     int duration;
     int durationAlt;
     int durationPict;
-    QVector<int> pictInfo;
+    int pictInfo;
     QPixmap leftHigh {"://pictures/left_high.jpg"};
     QPixmap forwardHigh {"://pictures/forward_high.jpg"};
     QPixmap rightHigh {"://pictures/right_high.jpg"};
-    QString leftInfo, forwardInfo, rightInfo;
+    QTimer *quizTimer;
+    QTime quizTime;
+    bool finished;
 };
 
 #endif // QUIZ_H

@@ -9,13 +9,8 @@
         <file>pictures/pause.png</file>
         <file>pictures/car_oncoming.png</file>
         <file>pictures/right_high.jpg</file>
-        <file>pictures/right_low.jpg</file>
-        <file>pictures/right_medium.jpg</file>
         <file>pictures/forward_high.jpg</file>
-        <file>pictures/forward_medium.jpg</file>
         <file>pictures/left_high.jpg</file>
-        <file>pictures/left_medium.jpg</file>
-        <file>pictures/left_low.jpg</file>
         <file>pictures/road-light.png</file>
         <file>pictures/car.png</file>
     </qresource>

@@ -5,17 +5,11 @@
 #include <QVector>
 #include <QString>
 
-struct ProbCost
-{
-    double prob, cost;
-};
-
 struct Question
 {
     Question();
-    QVector<QVector<ProbCost>> table;
-    QVector<QVector<ProbCost>> tableAlt;
-    QVector<int> showPict, showPictAlt;
+    QVector<int> table, tableAlt;
+    int showPict, showPictAlt;
     friend QTextStream& operator >> (QTextStream&, Question&);
 };
 
