@@ -12,17 +12,17 @@ QTextStream& operator >> (QTextStream &in, Question &q)
 {
     QString tmp;
     for (int i = 0; i < 5; i++) {
-        int sample;
+        double sample;
         in >> tmp;
-        sample = tmp.toInt();
+        sample = tmp.toDouble();
         q.table[i] = sample;
     }
     in >> tmp;
     q.showPict = tmp.toInt();
     for (int i = 0; i < 5; i++) {
-        int sample;
+        double sample;
         in >> tmp;
-        sample = tmp.toInt();
+        sample = tmp.toDouble();
         q.tableAlt[i] = sample;
     }
     in >> tmp;

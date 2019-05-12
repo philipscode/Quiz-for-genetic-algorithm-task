@@ -19,6 +19,7 @@
 #include <QByteArray>
 #include <QHeaderView>
 #include <QVector>
+#include <QStandardPaths>
 
 #include "question.h"
 #include "answer.h"

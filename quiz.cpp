@@ -11,7 +11,7 @@ Quiz::Quiz(QWidget *parent, QString userName) :
     ui->setupUi(this);
     ui->pauseButton->setStyleSheet("border-image:url("
                                    "://pictures/pause.png)");
-    QFile testFile("://test_questions.csv");
+    QFile testFile("://experiment.csv");
     if (!testFile.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
     while (!testFile.atEnd()) {
@@ -329,7 +329,9 @@ void Quiz::doTest()
 
 void Quiz::saveAnswers() const
 {
-    QString fileName = "results.csv";
+    QString fileName = QStandardPaths::writableLocation(
+                QStandardPaths::DocumentsLocation) + QDir::separator() +
+            "results.csv";
     QFile file(fileName);
     if (!file.exists())
         file.open(QIODevice::WriteOnly);

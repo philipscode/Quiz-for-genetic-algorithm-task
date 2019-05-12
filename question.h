@@ -8,7 +8,7 @@
 struct Question
 {
     Question();
-    QVector<int> table, tableAlt;
+    QVector<double> table, tableAlt;
     int showPict, showPictAlt;
     friend QTextStream& operator >> (QTextStream&, Question&);
 };
